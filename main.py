@@ -121,7 +121,7 @@ Currencies : `{country.currencies()}`
 Residence : `{country.demonym()}`
 Timezone : `{country.timezones()}`
 """
-    country_name = f'{country.name()}'
+    country_name = country.name()
     country_name = country_name.replace(" ", "+")
     reply_markup=InlineKeyboardMarkup(
         [[
