@@ -11,7 +11,6 @@ import time
 from countryinfo import CountryInfo
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.errors import FloodWait
 
 FayasNoushad = Client(
     "Country Info Bot",
@@ -139,11 +138,6 @@ Timezone : `{country.timezones()}`
             reply_markup=reply_markup,
             disable_web_page_preview=True
         )
-    except FloodWait as floodwait:
-        await asyncio.sleep(floodwait.x)
-        return countryinfo(bot, update)
-    except KeyError as keyerror:
-        print(keyerror)
     except Exception as error:
         print(error)
 
