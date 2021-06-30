@@ -13,13 +13,17 @@ License -> https://github.com/FayasNoushad/Country-Info-Bot/blob/main/LICENSE
 ---
 ## Deploy 
 
-### Deploy on Heroku
+<details>
+  <summary><b>Deploy on Heroku</b></summary>
+<br/>
 
 <p align="left">
   <a href="https://heroku.com/deploy?template=https://github.com/FayasNoushad/Country-Info-Bot/tree/main">
      <img height="30px" src="https://img.shields.io/badge/Deploy_To_Heroku-blueviolet?style=for-the-badge&logo=heroku">
   </a>
 </p>
+
+</details>
 
 ### Deploy in your vps
 
