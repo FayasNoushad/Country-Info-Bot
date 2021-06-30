@@ -25,7 +25,9 @@ License -> https://github.com/FayasNoushad/Country-Info-Bot/blob/main/LICENSE
 
 </details>
 
-### Deploy in your vps
+<details>
+  <summary><b>Deploy in your vps</b></summary>
+<br/>
 
 ```sh
 git clone https://github.com/FayasNoushad/Country-Info-Bot/tree/main
@@ -34,6 +36,8 @@ pip3 install -r requirements.txt
 # <Create Variables appropriately>
 python3 main.py
 ```
+
+</details>
 
 ---
 
