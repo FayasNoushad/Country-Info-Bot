@@ -1,5 +1,8 @@
 # Country-Info-Bot
+
 A simple country information bot
+
+---
 
 ```
 Made with Python3
