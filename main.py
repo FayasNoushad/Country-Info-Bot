@@ -13,7 +13,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
-FayasNoushad = Client(
+Bot = Client(
     "Country Info Bot",
     bot_token = os.environ["BOT_TOKEN"],
     api_id = int(os.environ["API_ID"]),
@@ -74,6 +74,7 @@ ERROR_BUTTON = InlineKeyboardMarkup(
         ]]
     )
 
+
 @FayasNoushad.on_callback_query()
 async def cb_data(bot, update):
     if update.data == "home":
@@ -97,7 +98,8 @@ async def cb_data(bot, update):
     else:
         await update.message.delete()
 
-@FayasNoushad.on_message(filters.private & filters.command(["start"]))
+
+@Bot.on_message(filters.private & filters.command(["start"]))
 async def start(bot, update):
     await update.reply_text(
         text=START_TEXT.format(update.from_user.mention),
@@ -105,7 +107,8 @@ async def start(bot, update):
         reply_markup=START_BUTTONS
     )
 
-@FayasNoushad.on_message(filters.private & filters.text)
+
+@Bot.on_message(filters.private & filters.text)
 async def countryinfo(bot, update):
     country = CountryInfo(update.text)
     info = f"""**Country Information**
@@ -120,8 +123,7 @@ Top Level Domains : `{country.tld()}`
 Calling Codes : `{country.calling_codes()}`
 Currencies : `{country.currencies()}`
 Residence : `{country.demonym()}`
-Timezone : `{country.timezones()}`
-"""
+Timezone : `{country.timezones()}`"""
     country_name = country.name()
     country_name = country_name.replace(" ", "+")
     reply_markup=InlineKeyboardMarkup(
@@ -143,4 +145,5 @@ Timezone : `{country.timezones()}`
     except Exception as error:
         print(error)
 
-FayasNoushad.run()
+
+Bot.run()
