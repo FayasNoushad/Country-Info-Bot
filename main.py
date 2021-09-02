@@ -12,6 +12,7 @@ from countryinfo import CountryInfo
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+
 FayasNoushad = Client(
     "Country Info Bot",
     bot_token = os.environ["BOT_TOKEN"],
@@ -107,7 +108,8 @@ async def start(bot, update):
 @FayasNoushad.on_message(filters.private & filters.text)
 async def countryinfo(bot, update):
     country = CountryInfo(update.text)
-    info = f"""
+    info = f"""**Country Information**
+
 Name : `{country.name()}`
 Native Name : `{country.native_name()}`
 Capital : `{country.capital()}`
