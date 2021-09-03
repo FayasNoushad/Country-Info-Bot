@@ -10,7 +10,9 @@ Made with Python3
 Copyright permission under MIT License
 License -> https://github.com/FayasNoushad/Country-Info-Bot/blob/main/LICENSE
 ```
+
 ---
+
 ## Deploy 
 
 <details>
