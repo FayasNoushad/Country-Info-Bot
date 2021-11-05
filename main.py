@@ -124,12 +124,10 @@ Calling Codes : `{country.calling_codes()}`
 Currencies : `{country.currencies()}`
 Residence : `{country.demonym()}`
 Timezone : `{country.timezones()}`"""
-    country_name = country.name()
-    country_name = country_name.replace(" ", "+")
     reply_markup=InlineKeyboardMarkup(
         [[
-        InlineKeyboardButton('Wikipedia', url=f'{country.wiki()}'),
-        InlineKeyboardButton('Google', url=f'https://www.google.com/search?q={country_name}')
+        InlineKeyboardButton('Wikipedia', url=country.wiki()),
+        InlineKeyboardButton('Google', url=country.google())
         ],[
         InlineKeyboardButton('Channel', url='https://telegram.me/FayasNoushad'),
         InlineKeyboardButton('Feedback', url='https://telegram.me/TheFayas')
