@@ -1,20 +1,24 @@
 import os
+import urllib
+from dotenv import load_dotenv
 from countryinfo import CountryInfo
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
+load_dotenv()
+
 Bot = Client(
-    "Country Info Bot",
+    "Country-Info-Bot",
     bot_token = os.environ["BOT_TOKEN"],
     api_id = int(os.environ["API_ID"]),
     api_hash = os.environ["API_HASH"]
 )
 
 START_TEXT = """Hello {},
-I am a country information finder bot. Give me a country name I will send the informations of the country.
 
-Made by @FayasNoushad"""
+I am a country information finder bot. \
+Give me a country name I will send the informations of the country."""
 
 HELP_TEXT = """**More Help**
 
@@ -22,24 +26,24 @@ HELP_TEXT = """**More Help**
 - Then I will check and send you the informations
 
 **Informations :-**
-Name, Native Name, Capital, Population, Region, Sub Region, Top Level Domains, Calling Codes, Currencies, Residence, Timezone, Wikipedia, Google
-
-Made by @FayasNoushad"""
+Name, Native Name, Capital, Population, Region, Sub Region, \
+Top Level Domains, Calling Codes, Currencies, Residence, \
+Timezone, Wikipedia, Google"""
 
 ABOUT_TEXT = """**About Me**
 
 - **Bot :** `Country Info Bot`
-- **Creator :** [Fayas](https://telegram.me/TheFayas)
-- **Channel :** [Fayas Noushad](https://telegram.me/FayasNoushad)
+- **Creator :**
+  - [Telegram](https://telegram.me/FayasNoushad)
+  - [GitHub](https://github.com/FayasNoushad)
 - **Source :** [Click here](https://github.com/FayasNoushad/Country-Info-Bot/tree/main)
 - **Language :** [Python3](https://python.org)
-- **Library :** [Pyrogram](https://pyrogram.org)"""
+- **Framework :** [Pyrogram](https://pyrogram.org)"""
 
 START_BUTTONS = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton('Channel', url='https://telegram.me/FayasNoushad'),
-            InlineKeyboardButton('Feedback', url='https://telegram.me/TheFayas')
+            InlineKeyboardButton('Send Feedback', url='https://telegram.me/FayasNoushad')
         ],
         [
             InlineKeyboardButton('Help', callback_data='help'),
@@ -117,8 +121,15 @@ async def start(bot, update):
 @Bot.on_message(filters.private & filters.text)
 async def countryinfo(bot, update):
     
-    country = CountryInfo(update.text)
+    try:
+        country = CountryInfo(update.text)
+    except KeyError:
+        await update.reply_text(
+            text="Key error.\nCan you check the name again."
+        )
+        return
     
+    google_url = "https://www.google.com/search?q="+urllib.parse.quote(country.name())
     info = f"""**Country Information**
 
 Name : `{country.name()}`
@@ -137,11 +148,10 @@ Timezone : `{country.timezones()}`"""
         [
             [
                 InlineKeyboardButton('Wikipedia', url=country.wiki()),
-                InlineKeyboardButton('Google', url=country.google())
+                InlineKeyboardButton('Google', url=google_url)
             ],
             [
-                InlineKeyboardButton('Channel', url='https://telegram.me/FayasNoushad'),
-                InlineKeyboardButton('Feedback', url='https://telegram.me/TheFayas')
+                InlineKeyboardButton('Send Feedback', url='https://telegram.me/FayasNoushad')
             ]
         ]
     )
