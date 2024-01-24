@@ -1,6 +1,7 @@
 import os
+import urllib
 from dotenv import load_dotenv
-from weather import get_weather
+from countryinfo import CountryInfo
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -8,7 +9,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 load_dotenv()
 
 Bot = Client(
-    "Weather-Bot",
+    "Country-Info-Bot",
     bot_token = os.environ["BOT_TOKEN"],
     api_id = int(os.environ["API_ID"]),
     api_hash = os.environ["API_HASH"]
@@ -16,26 +17,26 @@ Bot = Client(
 
 START_TEXT = """Hello {},
 
-I am a weather information finding bot. \
-Give me a country/city/place name, \
-I will send the weather informations about the place."""
+I am a country information finder bot. \
+Give me a country name I will send the informations of the country."""
 
 HELP_TEXT = """**More Help**
 
-- Just send me a country/city/place name
+- Just send me a country name
 - Then I will check and send you the informations
 
 **Informations :-**
-Location details, current weather conditions \
-(includes air quality details)"""
+Name, Native Name, Capital, Population, Region, Sub Region, \
+Top Level Domains, Calling Codes, Currencies, Residence, \
+Timezone, Wikipedia, Google"""
 
 ABOUT_TEXT = """**About Me**
 
-- **Bot :** `Weather Bot`
+- **Bot :** `Country Info Bot`
 - **Creator :**
   - [Telegram](https://telegram.me/FayasNoushad)
   - [GitHub](https://github.com/FayasNoushad)
-- **Source :** [Click here](https://github.com/FayasNoushad/Weather-Bot/tree/main)
+- **Source :** [Click here](https://github.com/FayasNoushad/Country-Info-Bot/tree/main)
 - **Language :** [Python3](https://python.org)
 - **Framework :** [Pyrogram](https://pyrogram.org)"""
 
@@ -118,28 +119,46 @@ async def start(bot, update):
 
 
 @Bot.on_message(filters.private & filters.text)
-async def weatherinfo(bot, update):
+async def countryinfo(bot, update):
     
     try:
-        details = get_weather(update.text)
+        country = CountryInfo(update.text)
     except KeyError:
         await update.reply_text(
             text="Key error.\nCan you check the name again."
         )
         return
     
-    reply_markup=InlineKeyboardMarkup([
-        [InlineKeyboardButton('Send Feedback', url='https://telegram.me/FayasNoushad')]
-    ])
+    google_url = "https://www.google.com/search?q="+urllib.parse.quote(country.name())
+    info = f"""**Country Information**
+
+Name : `{country.name()}`
+Native Name : `{country.native_name()}`
+Capital : `{country.capital()}`
+Population : `{country.population()}`
+Region : `{country.region()}`
+Sub Region : `{country.subregion()}`
+Top Level Domains : `{country.tld()}`
+Calling Codes : `{country.calling_codes()}`
+Currencies : `{country.currencies()}`
+Residence : `{country.demonym()}`
+Timezone : `{country.timezones()}`"""
+    
+    reply_markup=InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton('Wikipedia', url=country.wiki()),
+                InlineKeyboardButton('Google', url=google_url)
+            ],
+            [
+                InlineKeyboardButton('Send Feedback', url='https://telegram.me/FayasNoushad')
+            ]
+        ]
+    )
     
     try:
-        for i in details:
-            await update.reply_text(
-                text=i,
-                disable_web_page_preview=True
-            )
         await update.reply_text(
-            text="Thanks for using me.",
+            text=info,
             reply_markup=reply_markup,
             disable_web_page_preview=True
         )

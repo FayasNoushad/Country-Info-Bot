@@ -1,4 +1,4 @@
 pyrogram
 tgcrypto
-requests
+countryinfo
 python-dotenv
